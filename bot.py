@@ -66,7 +66,7 @@ def get_usd(update, context):
     nigeria_time = timezone('Africa/Lagos')
     #datetime object
     dt = datetime.datetime.now( nigeria_time)
-    dt_string = dt.strftime("%A, %d-%m/-Y  • %H:%M:%S")
+    dt_string = dt.strftime("%A, %d-%m-%Y  • %H:%M:%S")
     print("Current date and time =", dt_string)
     
     cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
