@@ -68,11 +68,12 @@ def get_usd(update, context):
     dt = datetime.datetime.now( nigeria_time)
     dt_string = dt.strftime("%A, %d-%m-%Y  • %H:%M:%S")
     print("Current date and time =", dt_string)
-    
+    note = '\U0001f4b5'
+    cleaned_rate = '{}\n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string, note, float_rate)
     cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
         symbol, float_rate, float_hr_h, float_hr_low)
     context.bot.send_message(
-        chat_id=update.effective_chat.id, text=cleaner_rate)
+        chat_id=update.effective_chat.id, text=cleaned_rate)
 
 
 def ngnusd(real):
