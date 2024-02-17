@@ -2,7 +2,8 @@
 import json
 from telegram.ext import Updater, CommandHandler, Dispatcher
 import os
-
+from pytz import timezone
+import datetime
 from dotenv import load_dotenv
 import urllib3
 load_dotenv()
@@ -62,7 +63,13 @@ def get_usd(update, context):
     hr_low = parse_json["lowPrice"]
     float_hr_h = float(hr_high)
     float_hr_low = float(hr_low)
-    cleaner_rate = "USD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(
+    nigeria_time = timezone('Africa/Lagos')
+    #datetime object
+    dt = datetime.datetime.now( nigeria_time)
+    dt_string = dt.strftime("Date: %A %d/%m/%Y  time: %H:%M:%S")
+    print("Current date and time =", dt_string)
+    
+    cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
         symbol, float_rate, float_hr_h, float_hr_low)
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=cleaner_rate)
