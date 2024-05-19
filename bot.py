@@ -23,8 +23,9 @@ parse_json = json.loads(r.data.decode('utf-8'))
 # response = requests.get(url)
 # data = response.text
 # parse_json = json.loads(data)
-rate = parse_json["lastPrice"]
+rate = parse_json["data"]["NGN"]["value"]
 float_rate = float(rate)
+float_rate = "{:.2F}".format(float_rate)
 
 
 # def help(update, context):
