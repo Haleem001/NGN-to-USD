@@ -24,8 +24,9 @@ parse_json = json.loads(r.data.decode('utf-8'))
 # data = response.text
 # parse_json = json.loads(data)
 rate = parse_json["data"]["NGN"]["value"]
-float_rate = float(rate)
-float_rate = "{:.2F}".format(float_rate)
+float_rate1 = float(rate)
+# float_rate = "{:.2F}".format(float_rate1)
+float_rate =  round(float_rate1, 2)
 
 
 # def help(update, context):
@@ -60,7 +61,7 @@ def start(update, context):
 
 
 def get_usd(update, context):
-    symbol = parse_json['symbol']
+    symbol = parse_json['data']['NGN']['code']
     hr_high = parse_json["highPrice"]
     hr_low = parse_json["lowPrice"]
     float_hr_h = float(hr_high)
