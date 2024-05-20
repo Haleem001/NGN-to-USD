@@ -26,8 +26,8 @@ parse_json = json.loads(r.data.decode('utf-8'))
 rate = parse_json["data"]["NGN"]["value"]
 float_rate1 = float(rate)
 # float_rate = "{:.2F}".format(float_rate1)
-float_rate =  round(float_rate1, 2)
-
+float_rate2 =  round(float_rate1, 2)
+float_rate = float_rate2 - 20
 
 # def help(update, context):
 #     context.bot.send_message(
