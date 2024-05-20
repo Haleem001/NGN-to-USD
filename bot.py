@@ -62,10 +62,10 @@ def start(update, context):
 
 def get_usd(update, context):
     symbol = parse_json['data']['NGN']['code']
-    hr_high = parse_json["highPrice"]
-    hr_low = parse_json["lowPrice"]
-    float_hr_h = float(hr_high)
-    float_hr_low = float(hr_low)
+    # hr_high = parse_json["highPrice"]
+    # hr_low = parse_json["lowPrice"]
+    # float_hr_h = float(hr_high)
+    # float_hr_low = float(hr_low)
     nigeria_time = timezone('Africa/Lagos')
     #datetime object
     dt = datetime.datetime.now( nigeria_time)
@@ -73,8 +73,8 @@ def get_usd(update, context):
     print("Current date and time =", dt_string)
     note = '\U0001f4b5'
     cleaned_rate = '{}\n\t\t\t\t\t\t\t USD-NGN | {}\n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string,symbol, note, float_rate)
-    cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
-        symbol, float_rate, float_hr_h, float_hr_low)
+    # cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
+    #     symbol, float_rate, float_hr_h, float_hr_low)
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=cleaned_rate )
 
