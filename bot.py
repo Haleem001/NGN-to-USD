@@ -65,7 +65,7 @@ def start(update, context):
         'Use /help to show commands list'
     )
 
-def get_usd2( update, context):
+def get_usd2(update, context):
     average_value = get_saved_value()
     if average_value is None:
         average_value = get_average_value()

@@ -3,9 +3,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
+from selenium.webdriver.chrome.options import Options
+chrome_options = Options()
+chrome_options.binary_location = "/usr/bin/google-chrome-stable_current_amd64.deb"
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
+
+
+
+
 
 def get_average_value():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome("/usr/local/bin/chromedriver", options=chrome_options)
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
 
     try:

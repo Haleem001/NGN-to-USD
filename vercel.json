@@ -1,6 +1,13 @@
 {
     "version": 2,
     "builds": [
+
+         { "src": "package.json", 
+         
+            "use": "@vercel/node" 
+        
+        },
+        
         {
             "src": "./index.py",
             "use": "@vercel/python"
