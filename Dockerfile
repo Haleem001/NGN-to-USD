@@ -22,23 +22,20 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
  
 
 
+# Install Chrome
+RUN wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.99/linux64/chrome-linux64.zip \
+    && unzip chrome-linux64.zip -d /opt/ \
+    && ln -s /opt/chrome-linux64/chrome /usr/bin/chrome \
+    && rm chrome-linux64.zip
+
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=127.0.6533.99 \
-    && wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -P /tmp/ -v \
-    && unzip -v /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
-    && rm /tmp/chromedriver_linux64.zip \
-    && chmod +x /usr/local/bin/chromedriver \
-    && chromedriver --version
+RUN wget -q https://chromedriver.storage.googleapis.com/127.0.6533.99/chromedriver_linux64.zip \
+    && unzip chromedriver_linux64.zip -d /usr/local/bin/ \
+    && rm chromedriver_linux64.zip
 
+# Set Chrome and ChromeDriver in PATH
+ENV PATH="/opt/chrome-linux64:/usr/local/bin:${PATH}"
 
-
-# Get Chrome version and install matching ChromeDriver
-RUN CHROME_VERSION=$(google-chrome --version | awk '{ print $3 }' | cut -d. -f1-3) \
-    && CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}") \
-    && wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -P /tmp/ \
-    && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
-    && rm /tmp/chromedriver_linux64.zip \
-    && chmod +x /usr/local/bin/chromedriver
 
 
 
