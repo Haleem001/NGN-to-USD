@@ -157,23 +157,23 @@ def convert(update, context):
 
 
 
-def get_dispatcher(bot):
-    dispatcher = Dispatcher(bot, None, workers=0)
-    dispatcher.add_handler(CommandHandler("start", start, run_async=True))
-    dispatcher.add_handler(CommandHandler('help', help, run_async=True))
-    dispatcher.add_handler(CommandHandler("usd", get_usd2, run_async=True))
-    dispatcher.add_handler(CommandHandler("convert", convert, run_async=True))
-    dispatcher.add_handler(CommandHandler("ngnusd", ngnusdd, run_async=True))
-    dispatcher.add_handler(CommandHandler("usdngn", usdngnn, run_async=True))
-    return dispatcher
+# def get_dispatcher(bot):
+#     dispatcher = Dispatcher(bot, None, workers=0)
+#     dispatcher.add_handler(CommandHandler("start", start, run_async=True))
+#     dispatcher.add_handler(CommandHandler('help', help, run_async=True))
+#     dispatcher.add_handler(CommandHandler("usd", get_usd2, run_async=True))
+#     dispatcher.add_handler(CommandHandler("convert", convert, run_async=True))
+#     dispatcher.add_handler(CommandHandler("ngnusd", ngnusdd, run_async=True))
+#     dispatcher.add_handler(CommandHandler("usdngn", usdngnn, run_async=True))
+#     return dispatcher
 
-# dispatcher.add_handler(CommandHandler("start", start))
-# dispatcher.add_handler(CommandHandler('help', help))
-# dispatcher.add_handler(CommandHandler("usd", get_usd2)) 
-# dispatcher.add_handler(CommandHandler('ngnusd' , ngnusdd))
-# dispatcher.add_handler(CommandHandler('usdngn', usdngnn))
+dispatcher.add_handler(CommandHandler("start", start))
+dispatcher.add_handler(CommandHandler('help', help))
+dispatcher.add_handler(CommandHandler("usd", get_usd2)) 
+dispatcher.add_handler(CommandHandler('ngnusd' , ngnusdd))
+dispatcher.add_handler(CommandHandler('usdngn', usdngnn))
 
-# if __name__ == '__main__':
-#     updater.start_polling()
-#     print("Bot is running. Press Ctrl+C to stop.")
-#     updater.idle()
+if __name__ == '__main__':
+    updater.start_polling()
+    print("Bot is running. Press Ctrl+C to stop.")
+    updater.idle()

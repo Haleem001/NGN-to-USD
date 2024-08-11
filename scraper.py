@@ -4,10 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 chrome_options = Options()
-chrome_options.binary_location = "/tmp/headless-chromium"
 chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
@@ -18,8 +19,11 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 
 
 
+
+
+
 def get_average_value():
-    driver = webdriver.Chrome("/tmp/chromedriver/chromedriver", options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
 
     try:
