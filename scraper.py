@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
-from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+
 
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -15,7 +16,7 @@ chrome_options.add_argument('--disable-gpu')
 chrome_options.binary_location = '/usr/bin/chrome'
 
 
-
+service = Service('/usr/local/bin/chromedriver')
 
 
 
@@ -25,7 +26,7 @@ chrome_options.binary_location = '/usr/bin/chrome'
 
 
 def get_average_value():
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
 
     try:

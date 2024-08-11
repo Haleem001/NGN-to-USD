@@ -11,7 +11,7 @@ from scraper import get_average_value
 
 load_dotenv()
 
-PORT = int(os.environ.get('PORT', 443))
+PORT = int(os.environ.get('PORT', 5000))
 
 TOKEN = os.getenv('BOTAPITOKEN')
 updater = Updater(token=TOKEN, use_context=True)
