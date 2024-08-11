@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "vercel-build": "wget https://github.com/adieuadieu/serverless-chrome/releases/download/v1.0.0-55/stable-headless-chromium-amazonlinux-2.zip && unzip stable-headless-chromium-amazonlinux-2.zip -d /tmp && mkdir -p /tmp/chromedriver && cp bin/chromedriver /tmp/chromedriver/chromedriver"
+    "vercel-build": "yum install -y wget && wget https://github.com/adieuadieu/serverless-chrome/releases/download/v1.0.0-55/stable-headless-chromium-amazonlinux-2.zip && unzip stable-headless-chromium-amazonlinux-2.zip -d /tmp && mkdir -p /tmp/chromedriver && cp bin/chromedriver /tmp/chromedriver/chromedriver"
   }
 }
