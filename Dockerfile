@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libgconf-2-4 \
     default-jdk \
     gnupg \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Chrome
@@ -20,7 +21,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
     && rm -rf /var/lib/apt/lists/*
 
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
+RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) \
     && wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -P /tmp/ \
     && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin/ \
     && rm /tmp/chromedriver_linux64.zip \
