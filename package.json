@@ -1,0 +1,6 @@
+{
+    "scripts": {
+      "vercel-build": "yum install -y google-chrome-stable && cp bin/chromedriver /usr/local/bin/chromedriver"
+    }
+  }
+  
