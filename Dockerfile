@@ -12,14 +12,6 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     curl \
     && rm -rf /var/lib/apt/lists/*
-# Install latest stable Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/* \
-    && google-chrome --version
- 
 
 
 # Install Chrome
@@ -29,11 +21,13 @@ RUN wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.
     && rm chrome-linux64.zip
 
 # Install ChromeDriver
-
 RUN wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.99/linux64/chromedriver-linux64.zip \
-    && unzip chromedriver-linux64.zip -d /usr/local/bin/ \
+    && unzip -v chromedriver-linux64.zip -d /usr/local/bin/ \
+    && ls -l /usr/local/bin/ \
     && rm chromedriver-linux64.zip \
-    && chmod +x /usr/local/bin/chromedriver
+    && chmod +x /usr/local/bin/chromedriver \
+    && /usr/local/bin/chromedriver --version
+
 
 
 # Set Chrome and ChromeDriver in PATH
