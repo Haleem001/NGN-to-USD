@@ -33,14 +33,18 @@ dispatcher = updater.dispatcher
 # float_rate = float_rate2 - 20
 
 
+import time
+
 def get_saved_value():
     try:
         with open('/tmp/average_value.json', 'r') as f:
             data = json.load(f)
-            return data['average']
-
+            if time.time() - data['timestamp'] < 24 * 3600:  # 24 hours
+                return data['average']
     except FileNotFoundError:
-        return None
+        pass
+    return None
+
 
 def help(update, context):
     context.bot.send_message(
