@@ -145,10 +145,10 @@ def convert(update, context):
     name4 = name2.lower()
 
     if name4 == 'usd':
-        update.message.reply_text(ngnusd(
+        update.message.reply_text(ngnusdd(
             number_to_conv2))
     elif name4 == 'ngn':
-        update.message.reply_text(usdngn(
+        update.message.reply_text(usdngnn(
             number_to_conv2))
 
 
@@ -163,7 +163,11 @@ def get_dispatcher(bot):
     dispatcher.add_handler(CommandHandler("usdngn", usdngnn))
     return dispatcher
 
-
+# dispatcher.add_handler(CommandHandler("start", start))
+# dispatcher.add_handler(CommandHandler('help', help))
+# dispatcher.add_handler(CommandHandler("usd", get_usd2)) 
+# dispatcher.add_handler(CommandHandler('ngnusd' , ngnusdd))
+# dispatcher.add_handler(CommandHandler('usdngn', usdngnn))
 
 # if __name__ == '__main__':
 #     updater.start_polling()
