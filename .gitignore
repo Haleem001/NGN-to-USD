@@ -12,4 +12,4 @@ node_modules/
 package-lock.json
 package.json
 .vercel
-google-chrome-stable_current_amd64.deb
+/bin/google-chrome-stable_current_amd64.deb
