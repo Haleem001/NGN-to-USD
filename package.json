@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "vercel-build": "yum install -y wget && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && yum install -y ./google-chrome-stable_current_amd64.deb || true && mkdir -p /tmp/chromedriver && cp bin/chromedriver /tmp/chromedriver/chromedriver"
+    "vercel-build": "yum install -y wget alien && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && alien -r google-chrome-stable_current_amd64.deb && yum install -y ./google-chrome-stable*.rpm || true && mkdir -p /tmp/chromedriver && cp bin/chromedriver /tmp/chromedriver/chromedriver"
   }
 }
