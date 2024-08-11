@@ -19,7 +19,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 
 
 def get_average_value():
-   driver = webdriver.Chrome("/tmp/chromedriver/chromedriver", options=chrome_options)
+    driver = webdriver.Chrome("/tmp/chromedriver/chromedriver", options=chrome_options)
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
 
     try:
