@@ -6,40 +6,42 @@ from pytz import timezone
 import datetime
 from dotenv import load_dotenv
 import urllib3
+from scraper import get_average_value
+
 
 load_dotenv()
 
-PORT = int(os.environ.get('PORT', 443))
+# PORT = int(os.environ.get('PORT', 443))
+PORT = int(os.environ.get('PORT', 5000))
 TOKEN = os.getenv('BOTAPITOKEN')
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
-url = os.getenv('APIURL')
-access_token = os.getenv("APITOKEN")
-http = urllib3.PoolManager()
-r = http.request('GET', url)
-parse_json = json.loads(r.data.decode('utf-8'))
+# url = os.getenv('APIURL')
+# access_token = os.getenv("APITOKEN")
+# http = urllib3.PoolManager()
+# r = http.request('GET', url)
+# parse_json = json.loads(r.data.decode('utf-8'))
 
 # response = requests.get(url)
 # data = response.text
 # parse_json = json.loads(data)
-rate = parse_json["data"]["NGN"]["value"]
-float_rate1 = float(rate)
+# rate = parse_json["data"]["NGN"]["value"]
+# float_rate1 = float(rate)
 # float_rate = "{:.2F}".format(float_rate1)
-float_rate2 =  round(float_rate1, 2)
-float_rate = float_rate2 - 20
+# float_rate2 =  round(float_rate1, 2)
+# float_rate = float_rate2 - 20
 
-# def help(update, context):
-#     context.bot.send_message(
-#         chat_id=update.effective_chat.id,
-#         text='/start - Start bot\n' +
-#         '/help - Show currency list\n' +
-#         '\n' +
-#         '/usd - Get current Dollar (USD) rate\n' +
-#         '/convert - Convert Naira (NGN) to Dollar (USD) or Dollar (USD) to Naira (NGN)\n ' +
-#         'Example - /convert 1000 usd ngn OR /convert 1000 ngn usd \n ' +
-#         'For enquiries contact @HaleemG\n'
-#     )
+
+def get_saved_value():
+    try:
+        with open('/tmp/average_value.json', 'r') as f:
+            data = json.load(f)
+            return data['average']
+
+    except FileNotFoundError:
+        return None
+
 def help(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -59,41 +61,35 @@ def start(update, context):
         'Use /help to show commands list'
     )
 
-
-def get_usd(update, context):
-    symbol = parse_json['data']['NGN']['code']
-    # hr_high = parse_json["highPrice"]
-    # hr_low = parse_json["lowPrice"]
-    # float_hr_h = float(hr_high)
-    # float_hr_low = float(hr_low)
+def get_usd2( update, context):
+    average_value = get_saved_value()
+    if average_value is None:
+        average_value = get_average_value()
     nigeria_time = timezone('Africa/Lagos')
-    #datetime object
     dt = datetime.datetime.now( nigeria_time)
     dt_string = dt.strftime("%A, %d-%m-%Y  • %H:%M:%S")
-    print("Current date and time =", dt_string)
     note = '\U0001f4b5'
-    cleaned_rate = '{}\n\t\t\t\t\t\t\t USD-NGN | {}\n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string,symbol, note, float_rate)
-    # cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
-    #     symbol, float_rate, float_hr_h, float_hr_low)
+    cleaned_rate = '{}\n\t\t\t\t\t\t\t USD-NGN \n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string, note, average_value)
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=cleaned_rate )
-
-
-def ngnusd(real):
-
-    real = float(real)
-    convert = real/float_rate
-    rate = '₦{:,} is ${:,.3f}' .format(real, convert)
-    return rate
-
-
-def usdngn(real):
-
-    real = float(real)
-    convert = real*float_rate
-
-    rate = ('${:,} is ₦{:,.2f}' .format(real, convert))
-    return rate
+    
+# def get_usd(update, context):
+#     symbol = parse_json['data']['NGN']['code']
+#     # hr_high = parse_json["highPrice"]
+#     # hr_low = parse_json["lowPrice"]
+#     # float_hr_h = float(hr_high)
+#     # float_hr_low = float(hr_low)
+#     nigeria_time = timezone('Africa/Lagos')
+#     #datetime object
+#     dt = datetime.datetime.now( nigeria_time)
+#     dt_string = dt.strftime("%A, %d-%m-%Y  • %H:%M:%S")
+#     print("Current date and time =", dt_string)
+#     note = '\U0001f4b5'
+#     cleaned_rate = '{}\n\t\t\t\t\t\t\t USD-NGN | {}\n\t\t\t\t\t\t\t {} 1 USD => ₦{:.2f}'.format(dt_string,symbol, note, float_rate)
+#     # cleaner_rate = "{}\n\t\t\t\t\t\t\tUSD-NGN | {}\n\t\t\t\t\t\t\tPRICE: ₦{:.2f}\n\t\t\t\t\t\t\t24hr H: ₦{:.2f}\n\t\t\t\t\t\t\t24hr L: ₦{:.2f}\n".format(dt_string,
+#     #     symbol, float_rate, float_hr_h, float_hr_low)
+#     context.bot.send_message(
+#         chat_id=update.effective_chat.id, text=cleaned_rate )
 
 
 def ngnusdd(update, context):
@@ -103,11 +99,15 @@ def ngnusdd(update, context):
     # parse_json = json.loads(data)
     # rate = parse_json['lastPrice']
     # float_rate = float(rate)
+
     real = update.message.text.replace('/ngnusd', '')
     real = real.replace(',', '.')
+    average_value = get_saved_value()
+    if average_value is None:
+        average_value = get_average_value()
 
     real = float(real)
-    convert = real/float_rate
+    convert = real/average_value
 
     update.message.reply_text('₦{} is ${:.3f}' .format(real, convert))
 
@@ -123,7 +123,10 @@ def usdngnn(update, context):
     real = real.replace(',', '.')
 
     real = float(real)
-    convert = real*float_rate
+    average_value = get_saved_value()
+    if average_value is None:
+        average_value = get_average_value()
+    convert = real*average_value
 
     update.message.reply_text('${} is ₦{:.2f}' .format(real, convert))
 
@@ -154,16 +157,15 @@ def get_dispatcher(bot):
     dispatcher = Dispatcher(bot, None, workers=0)
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler('help', help))
-    dispatcher.add_handler(CommandHandler("usd", get_usd))
+    dispatcher.add_handler(CommandHandler("usd", get_usd2))
     dispatcher.add_handler(CommandHandler("convert", convert))
     dispatcher.add_handler(CommandHandler("ngnusd", ngnusdd))
     dispatcher.add_handler(CommandHandler("usdngn", usdngnn))
     return dispatcher
-# updater.start_polling()
-# updater.idle()
 
 
-# updater.start_webhook(listen="0.0.0.0",
-#                           port=int(PORT),
-#                           url_path=TOKEN)
-# updater.bot.setWebhook('http://localhost:3000' + TOKEN)
+
+# if __name__ == '__main__':
+#     updater.start_polling()
+#     print("Bot is running. Press Ctrl+C to stop.")
+#     updater.idle()
