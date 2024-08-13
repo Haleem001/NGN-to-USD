@@ -6,19 +6,35 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
+
+from selenium.webdriver.chrome.service import Service as ChromeService
+from pyvirtualdisplay import Display
+
+# chrome_options = Options()
+# chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--no-sandbox')
+# chrome_options.add_argument('--disable-dev-shm-usage')
+# chrome_options.add_argument('--disable-gpu')
+
+# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+
+
+display = Display(visible=0, size=(1200, 800))
+display.start()
+
+# now Firefox will run in a virtual display.
+# you will not see the browser.
+# start Chrome
 chrome_options = Options()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--window-size=1200x800")
 chrome_options.add_argument('--disable-dev-shm-usage')
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--remote-debugging-port=9222')
-chrome_options.binary_location = '/opt/chrome-linux64/chrome'
-
-
-
-service = Service('/usr/local/bin/chromedriver')
+# Should chrome not be found use:
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
 
 
@@ -28,8 +44,11 @@ service = Service('/usr/local/bin/chromedriver')
 
 
 def get_average_value():
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    
+
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
+   
+    
 
     try:
         confirm_button = WebDriverWait(driver, 10).until(
@@ -41,8 +60,9 @@ def get_average_value():
 
     values = []
     for i in range(1, 11):
+        wait = WebDriverWait(driver, 30) # Wait for up to 10 seconds
         xpath = f"/html/body/div[8]/div[3]/div[1]/div[2]/div[2]/div/div/div/table/tbody[2]/tr[{i}]/td[2]/div/div/span"
-        element = driver.find_element(By.XPATH, xpath)
+        element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
         value = float(re.sub(r'[^\d.]', '', element.text))
         values.append(value)
 

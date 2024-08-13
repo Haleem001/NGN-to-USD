@@ -1,0 +1,6 @@
+venv/
+vercel.json
+package.json
+.vercel/
+__pycache__/
+index.py
