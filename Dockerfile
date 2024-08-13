@@ -39,18 +39,16 @@ RUN apt-get update && apt-get install xvfb -y
 
 
 
+# Install Firefox ESR 102.0
+RUN wget -O firefox.tar.bz2 "https://ftp.mozilla.org/pub/firefox/releases/102.0esr/linux-x86_64/en-US/firefox-102.0esr.tar.bz2" \
+    && tar xjf firefox.tar.bz2 -C /opt/ \
+    && ln -s /opt/firefox/firefox /usr/bin/firefox
 
-RUN apt-get update && apt-get install -y firefox-esr
-
-
-
-# Install GeckoDriver
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz \
-    && tar -xvzf geckodriver-v0.35.0-linux64.tar.gz \
-    && mv geckodriver /usr/local/bin/ \
-    && rm geckodriver-v0.35.0-linux64.tar.gz
-
-
+# Install geckodriver 0.31.0 (compatible with Firefox 102)
+RUN wget -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz \
+    && tar -C /opt -zxf /tmp/geckodriver.tar.gz \
+    && chmod +x /opt/geckodriver \
+    && ln -s /opt/geckodriver /usr/local/bin/geckodriver
 
 
 
@@ -69,9 +67,8 @@ COPY . /app
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install apscheduler
 
-RUN echo '#!/bin/bash\npython scheduler.py &\npython bot.py' > entrypoint.sh
+RUN echo '#!/bin/bash\npython bot.py' > entrypoint.sh
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
