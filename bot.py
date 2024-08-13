@@ -7,7 +7,7 @@ import datetime
 from dotenv import load_dotenv
 import urllib3
 from scraper import get_average_value
-
+from scheduler import start_scheduler
 
 load_dotenv()
 
@@ -39,7 +39,7 @@ def get_saved_value():
     try:
         with open('/tmp/average_value.json', 'r') as f:
             data = json.load(f)
-            if time.time() - data['timestamp'] < 24 * 3600:  # 24 hours
+            if time.time() - data['timestamp'] < 4 * 3600:  # 4 hours
                 return data['average']
     except FileNotFoundError:
         pass
@@ -174,6 +174,7 @@ dispatcher.add_handler(CommandHandler('ngnusd' , ngnusdd))
 dispatcher.add_handler(CommandHandler('usdngn', usdngnn))
 
 if __name__ == '__main__':
+    start_scheduler()
     updater.start_polling()
     print("Bot is running. Press Ctrl+C to stop.")
     updater.idle()

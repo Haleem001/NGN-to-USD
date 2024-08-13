@@ -7,11 +7,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
-
+from selenium.webdriver import Firefox
+from webdriver_manager.firefox import GeckoDriverManager
 
 from selenium.webdriver.chrome.service import Service as ChromeService
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 
 # chrome_options = Options()
 # chrome_options.add_argument('--headless')
@@ -20,22 +20,28 @@ from pyvirtualdisplay import Display
 # chrome_options.add_argument('--disable-gpu')
 
 # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+from selenium.webdriver.firefox.service import Service as FirefoxService
+
+# display = Display(visible=0, size=(1200, 800))
+# display.start()
 
 
-display = Display(visible=0, size=(1200, 800))
-display.start()
 
-# now Firefox will run in a virtual display.
-# you will not see the browser.
-# start Chrome
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--window-size=1200x800")
-chrome_options.add_argument('--disable-dev-shm-usage')
-# Should chrome not be found use:
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+# chrome_options = Options()
+# # chrome_options.add_argument("--headless=new")
+# chrome_options.add_argument("--no-sandbox")
+# chrome_options.add_argument("--window-size=1200,800")
+# chrome_options.add_argument('--disable-dev-shm-usage')
+# chrome_options.add_argument("--disable-gpu")
+# chrome_options.add_argument("--disable-extensions")
 
+# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+
+firefox_options = webdriver.FirefoxOptions()
+firefox_options.add_argument("--headless")
+
+service = Service('/usr/local/bin/geckodriver')
+driver = webdriver.Firefox(service=service, options=firefox_options)
 
 
 
@@ -44,11 +50,10 @@ driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())
 
 
 def get_average_value():
-    
 
+    
     driver.get('https://www.bybit.com/fiat/trade/otc/?actionType=1&token=USDT&fiat=NGN&paymentMethod=')
    
-    
 
     try:
         confirm_button = WebDriverWait(driver, 10).until(
@@ -60,14 +65,17 @@ def get_average_value():
 
     values = []
     for i in range(1, 11):
-        wait = WebDriverWait(driver, 30) # Wait for up to 10 seconds
+       
         xpath = f"/html/body/div[8]/div[3]/div[1]/div[2]/div[2]/div/div/div/table/tbody[2]/tr[{i}]/td[2]/div/div/span"
-        element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        element = driver.find_element(By.XPATH, xpath)
         value = float(re.sub(r'[^\d.]', '', element.text))
         values.append(value)
 
     average_value = sum(values) / len(values)
+    prnt = f"Average value: {average_value}"
+    print(prnt)
     driver.quit()
+    
     return average_value
 
-# This function can be called to get the average value when needed
+

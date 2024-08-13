@@ -1,15 +1,14 @@
-from http.server import BaseHTTPRequestHandler
+from apscheduler.schedulers.background import BackgroundScheduler
 from scraper import get_average_value
 import json
 import time
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        average = get_average_value()
-        with open('/tmp/average_value.json', 'w') as f:
-            json.dump({'average': average, 'timestamp': time.time()}, f)
-        
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(json.dumps({'status': 'updated'}).encode())
 
-# This handler will be called by the Vercel cron job to update the average value
+def save_average_value():
+    average_value = get_average_value()
+    with open('/tmp/average_value.json', 'w') as f:
+        json.dump({'average': average_value, 'timestamp': time.time()}, f)
+
+def start_scheduler():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(save_average_value, 'interval', minutes=240)
+    scheduler.start()
