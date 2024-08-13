@@ -9,9 +9,12 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver import Firefox
 from webdriver_manager.firefox import GeckoDriverManager
+from pyvirtualdisplay import Display
 
 from selenium.webdriver.chrome.service import Service as ChromeService
 # from pyvirtualdisplay import Display
+display = Display(visible=0, size=(1200, 800))
+display.start()
 
 # chrome_options = Options()
 # chrome_options.add_argument('--headless')
