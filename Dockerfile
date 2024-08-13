@@ -61,6 +61,8 @@ RUN wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.
 #     && chmod +x /usr/local/bin/chromedriver \
 #     && /usr/local/bin/chromedriver --version
 
+RUN pip install apscheduler
+COPY entrypoint.sh .
 
 RUN chmod +x entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
