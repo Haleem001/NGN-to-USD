@@ -61,11 +61,7 @@ RUN wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.
 #     && chmod +x /usr/local/bin/chromedriver \
 #     && /usr/local/bin/chromedriver --version
 
-RUN pip install apscheduler
-COPY entrypoint.sh .
 
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
 
 
 
@@ -87,5 +83,9 @@ COPY . /app
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the bot
-CMD ["python", "bot.py"]
+RUN pip install apscheduler
+
+RUN echo '#!/bin/bash\npython scheduler.py &\npython bot.py' > entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
