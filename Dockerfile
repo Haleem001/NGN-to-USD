@@ -27,7 +27,8 @@ RUN for i in 1 2 3 4 5; do \
             libasound2 \
             libatk-bridge2.0-0 \
             libatspi2.0-0  \
-            libgtk-3-0 && \
+            libgtk-3-0 \
+            bzip2 && \
         break || sleep 15; \
     done && \
     apt-get clean && \
